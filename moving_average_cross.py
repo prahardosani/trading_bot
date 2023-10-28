@@ -47,7 +47,7 @@ if __name__ == "__main__": # Ensures that the following code is executed only if
     data_folder = "./Historical_Data"
 
     # Specify the CSV file name
-    csv_file_name = "AAPL_2020-01-01_2023-10-28.csv"
+    csv_file_name = "AAPL_2020-01-01_2023-10-29.csv"
 
     # Create a Cerebro engine
     cerebro = bt.Cerebro()
