@@ -1,5 +1,6 @@
 import backtrader as bt # Import backtrader for backtesting and strategy implementation
 import os # Import the os module for working with file paths
+import glob
 
 # The code below defines a class called MovingAverageCrossStrategy that inherits from bt.Strategy. This is where you define your trading strategy.
 # params attribute: This section defines parameters that can be customized when creating an instance of the strategy. These parameters include the short and long moving average periods and the risk percentage.
@@ -46,17 +47,20 @@ if __name__ == "__main__": # Ensures that the following code is executed only if
     # Define the folder where the CSV data is located
     data_folder = "./Historical_Data"
 
-    # Specify the CSV file name
-    csv_file_name = "AAPL_2020-01-01_2024-08-17.csv"
+    # Use glob to find all CSV files in the folder
+    csv_files = glob.glob(os.path.join(data_folder, '*.csv'))
+
+    if csv_files:
+        latest_file = max(csv_files, key=os.path.getmtime)
+        print(f"Latest file selected: {latest_file}")
+    else:
+        print("No CSV files found.")
 
     # Create a Cerebro engine
     cerebro = bt.Cerebro()
 
-    # Add a data feed (CSV file with OHLCV data)
-    data_path = os.path.join(data_folder, csv_file_name)
-
     # Add a data feed (e.g., CSV file with OHLCV data)
-    data = bt.feeds.YahooFinanceCSVData(dataname=data_path)
+    data = bt.feeds.YahooFinanceCSVData(dataname=latest_file)
 
     cerebro.adddata(data)
     cerebro.addstrategy(MovingAverageCrossStrategy)
